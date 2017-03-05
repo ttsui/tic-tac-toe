@@ -17,7 +17,7 @@ const Board = props => {
   const range = new Array(props.size).fill("").map((v, idx) => idx);
 
   return (
-    <table>
+    <table style={{ margin: "1em auto"}} >
       <tbody>
         {
           range.map((r, rowIdx) => (
