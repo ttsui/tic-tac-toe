@@ -1,12 +1,22 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { shallow, mount } from "enzyme";
 import Board from "../Board";
 import Cell from "../Cell";
 
 it("renders", () => {
   const component = shallow(<Board size={ 3 } />);
 
-  expect(component).toContainReact(<Cell id="0,0" />);
-  expect(component.find(Cell).length).toBe(9);
-  expect(component).not.toContainReact(<Cell id="0,4" />);
+  const cells = component.find(Cell);
+  expect(cells.length).toBe(9);
+  expect(cells.first()).toHaveProp("id", "0,0");
+});
+
+it("calls onPlayerMove handler with coordinates of move", () => {
+  const handler = jest.fn();
+
+  const component = mount(<Board size={ 3 } onPlayerMove={ handler }/>);
+  const aCell = component.find(Cell).first();
+  aCell.simulate("click");
+
+  expect(handler).toHaveBeenCalledWith(aCell.prop("id"));
 });

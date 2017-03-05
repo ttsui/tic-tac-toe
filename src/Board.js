@@ -14,7 +14,8 @@ const Board = props => {
                 range.map((c, colIdx) => (
                   <td key={rowIdx + colIdx}>
                     <Cell key={rowIdx + colIdx}
-                          id={`${rowIdx},${colIdx}`} />
+                          id={`${rowIdx},${colIdx}`}
+                          onClick={ id => props.onPlayerMove(id) } />
                   </td>
                 ))
               }
@@ -26,6 +27,7 @@ const Board = props => {
   );
 }
 Board.propTypes = {
+  onPlayerMove: React.PropTypes.func,
   size: React.PropTypes.number
 };
 
