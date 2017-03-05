@@ -1,3 +1,7 @@
+export function containsWinningCoordinates(playerCoordinates, winningCoordinates) {
+  return false;
+}
+
 export function winningCoordinates(gridSize) {
   let coordinates = [];
 
