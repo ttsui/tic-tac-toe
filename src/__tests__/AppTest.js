@@ -52,3 +52,10 @@ it("renders dialog when there is a draw", () => {
 
   expect(component.find(ScaleModal)).toHaveText("The game is a draw.");
 });
+
+it("prevents placing a piece on an occupied cell", () => {
+  clickOnClick("0,0"); // Player X
+  clickOnClick("0,0"); // Player O
+
+  expect(component.find(".messages")).toHaveText(`Player ${PIECES.NOUGHT}'s move`);
+});

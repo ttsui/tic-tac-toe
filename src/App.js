@@ -31,6 +31,9 @@ class App extends Component {
       <div className="App">
         <div className="App-header">
           <h2>Tic-Tac-Toe</h2>
+          <h2 className="messages">
+            { `Player ${ this.state.currentPlayer }'s move` }
+          </h2>
         </div>
 
         <Board size={ this._boardSize }
@@ -68,8 +71,10 @@ class App extends Component {
     return crossPlayerIsWinner || noughtPlayerIsWinner || this._isBoardFull();
   }
 
-  _resetGame() {
-    this.setState(initialState());
+  _isMoveInvalid(cellId) {
+    const { crossPlayerPieces, noughtPlayerPieces } = this.state;
+
+    return crossPlayerPieces.includes(cellId) || noughtPlayerPieces.includes(cellId);
   }
 
   _onPlayerMove(cellId) {
@@ -77,6 +82,10 @@ class App extends Component {
 
     switch (currentPlayer) {
       case PIECES.CROSS:
+        if (this._isMoveInvalid(cellId)) {
+          return;
+        }
+
         crossPlayerPieces.push(cellId);
         if (this._isGameOver()) {
           this.setState({});
@@ -86,6 +95,10 @@ class App extends Component {
         }
         return;
       case PIECES.NOUGHT:
+        if (this._isMoveInvalid(cellId)) {
+          return;
+        }
+
         noughtPlayerPieces.push(cellId);
         if (this._isGameOver()) {
           this.setState({});
@@ -99,6 +112,11 @@ class App extends Component {
         return;
     }
   }
+
+  _resetGame() {
+    this.setState(initialState());
+  }
+
 }
 
 export default App;
