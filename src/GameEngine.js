@@ -1,4 +1,11 @@
 export function containsWinningCoordinates(playerCoordinates, winningCoordinates) {
+  for (let winningCoords of winningCoordinates) {
+    let isWinner = winningCoords.reduce((acc, coord) => acc && playerCoordinates.includes(coord), true);
+    if (isWinner) {
+      return true;
+    }
+  }
+
   return false;
 }
 
