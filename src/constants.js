@@ -1,4 +1,4 @@
 export const PIECES = {
-  CROSS: "⨯",
-  NOUGHT: "◯"
+  CROSS: "X",
+  NOUGHT: "O"
 };
