@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { winningCoordinates } from "./GameEngine";
+import ScaleModal from "boron/ScaleModal";
+import { winningCoordinates, containsWinningCoordinates } from "./GameEngine";
 import { PIECES } from "./constants";
 import Board from "./Board";
 
@@ -32,23 +33,32 @@ class App extends Component {
                crossPieces={ this.state.crossPlayerPieces }
                noughtPieces={ this.state.noughtPlayerPieces } />
 
+             <ScaleModal ref="winnerModal">
+               Player { this.state.currentPlayer } is the winner!
+             </ScaleModal>
       </div>
     );
   }
 
   _onPlayerMove(cellId) {
-    console.log("Player moved on ", cellId);
     switch (this.state.currentPlayer) {
       case PIECES.CROSS:
         this.state.crossPlayerPieces.push(cellId);
-        this.setState({
-          currentPlayer: PIECES.NOUGHT,
-          crossPlayerPieces: this.state.crossPlayerPieces
-        });
+        if (containsWinningCoordinates(this.state.crossPlayerPieces, this._winningCoordinates)) {
+          this.setState({});
+          this.refs.winnerModal.show();
+        } else {
+          this.setState({ currentPlayer: PIECES.NOUGHT });
+        }
         return;
       case PIECES.NOUGHT:
         this.state.noughtPlayerPieces.push(cellId);
-        this.setState({ currentPlayer: PIECES.CROSS });
+        if (containsWinningCoordinates(this.state.noughtPlayerPieces, this._winningCoordinates)) {
+          this.setState({});
+          this.refs.winnerModal.show();
+        } else {
+          this.setState({ currentPlayer: PIECES.CROSS });
+        }
         return;
       default:
         console.error("Unknown player: ", this.state.currentPlayer);
