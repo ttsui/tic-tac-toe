@@ -6,19 +6,24 @@ import Board from "./Board";
 
 import './App.css';
 
+function initialState() {
+  return {
+    currentPlayer: PIECES.CROSS,
+    crossPlayerPieces: [],
+    noughtPlayerPieces: []
+  };
+}
+
 class App extends Component {
   constructor() {
     super();
 
     this._boardSize = 3;
     this._winningCoordinates = winningCoordinates(this._boardSize);
-    this.state = {
-      currentPlayer: PIECES.CROSS,
-      crossPlayerPieces: [],
-      noughtPlayerPieces: []
-    };
+    this.state = initialState();
 
     this._onPlayerMove = this._onPlayerMove.bind(this);
+    this._resetGame = this._resetGame.bind(this);
   }
 
   render() {
@@ -33,7 +38,8 @@ class App extends Component {
                crossPieces={ this.state.crossPlayerPieces }
                noughtPieces={ this.state.noughtPlayerPieces } />
 
-             <ScaleModal ref="gameOverModal">
+             <ScaleModal ref="gameOverModal"
+                         onHide={ this._resetGame }>
                {
                  this._isBoardFull()
                    ? "The game is a draw."
@@ -60,6 +66,10 @@ class App extends Component {
                                                             this._winningCoordinates);
 
     return crossPlayerIsWinner || noughtPlayerIsWinner || this._isBoardFull();
+  }
+
+  _resetGame() {
+    this.setState(initialState());
   }
 
   _onPlayerMove(cellId) {
