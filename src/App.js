@@ -33,29 +33,51 @@ class App extends Component {
                crossPieces={ this.state.crossPlayerPieces }
                noughtPieces={ this.state.noughtPlayerPieces } />
 
-             <ScaleModal ref="winnerModal">
-               Player { this.state.currentPlayer } is the winner!
+             <ScaleModal ref="gameOverModal">
+               {
+                 this._isBoardFull()
+                   ? "The game is a draw."
+                   : `Player ${this.state.currentPlayer} is the winner!`
+               }
              </ScaleModal>
       </div>
     );
+  }
+
+  _isBoardFull() {
+    const { crossPlayerPieces, noughtPlayerPieces } = this.state;
+
+    return (crossPlayerPieces.length + noughtPlayerPieces.length) === (this._boardSize ** 2);
+  }
+
+  _isGameOver() {
+    const { crossPlayerPieces, noughtPlayerPieces } = this.state;
+
+    const crossPlayerIsWinner = containsWinningCoordinates(crossPlayerPieces,
+                                                           this._winningCoordinates);
+
+    const noughtPlayerIsWinner = containsWinningCoordinates(noughtPlayerPieces,
+                                                            this._winningCoordinates);
+
+    return crossPlayerIsWinner || noughtPlayerIsWinner || this._isBoardFull();
   }
 
   _onPlayerMove(cellId) {
     switch (this.state.currentPlayer) {
       case PIECES.CROSS:
         this.state.crossPlayerPieces.push(cellId);
-        if (containsWinningCoordinates(this.state.crossPlayerPieces, this._winningCoordinates)) {
+        if (this._isGameOver()) {
           this.setState({});
-          this.refs.winnerModal.show();
+          this.refs.gameOverModal.show();
         } else {
           this.setState({ currentPlayer: PIECES.NOUGHT });
         }
         return;
       case PIECES.NOUGHT:
         this.state.noughtPlayerPieces.push(cellId);
-        if (containsWinningCoordinates(this.state.noughtPlayerPieces, this._winningCoordinates)) {
+        if (this._isGameOver()) {
           this.setState({});
-          this.refs.winnerModal.show();
+          this.refs.gameOverModal.show();
         } else {
           this.setState({ currentPlayer: PIECES.CROSS });
         }

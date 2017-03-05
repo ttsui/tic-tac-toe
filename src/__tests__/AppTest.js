@@ -36,7 +36,19 @@ it("renders dialog when there is a winner", () => {
   clickOnClick("1,1"); // Player O
   clickOnClick("0,2"); // Player X
 
-  expect(component.find(ScaleModal)).toBePresent();
+  expect(component.find(ScaleModal)).toHaveText(`Player ${PIECES.CROSS} is the winner!`);
+});
 
+it("renders dialog when there is a draw", () => {
+  clickOnClick("0,0"); // Player X
+  clickOnClick("0,1"); // Player O
+  clickOnClick("0,2"); // Player X
+  clickOnClick("1,1"); // Player O
+  clickOnClick("1,0"); // Player X
+  clickOnClick("2,0"); // Player O
+  clickOnClick("1,2"); // Player X
+  clickOnClick("2,2"); // Player O
+  clickOnClick("2,1"); // Player X
 
+  expect(component.find(ScaleModal)).toHaveText("The game is a draw.");
 });
