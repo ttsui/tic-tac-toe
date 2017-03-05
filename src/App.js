@@ -73,9 +73,11 @@ class App extends Component {
   }
 
   _onPlayerMove(cellId) {
-    switch (this.state.currentPlayer) {
+    const { crossPlayerPieces, noughtPlayerPieces, currentPlayer } = this.state;
+
+    switch (currentPlayer) {
       case PIECES.CROSS:
-        this.state.crossPlayerPieces.push(cellId);
+        crossPlayerPieces.push(cellId);
         if (this._isGameOver()) {
           this.setState({});
           this.refs.gameOverModal.show();
@@ -84,7 +86,7 @@ class App extends Component {
         }
         return;
       case PIECES.NOUGHT:
-        this.state.noughtPlayerPieces.push(cellId);
+        noughtPlayerPieces.push(cellId);
         if (this._isGameOver()) {
           this.setState({});
           this.refs.gameOverModal.show();
@@ -93,7 +95,7 @@ class App extends Component {
         }
         return;
       default:
-        console.error("Unknown player: ", this.state.currentPlayer);
+        console.error("Unknown player: ", currentPlayer);
         return;
     }
   }
